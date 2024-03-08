@@ -4,7 +4,7 @@ public class ex05 {
 		String str1 = new String("안녕");     // 새로운 객체생성
 		String str2 = "안녕";                        // 같은 내용의 리터럴 객체 있는지 확인
 		String str3 = "안녕";                        // 같은 내용의 리터럴 객체 있는지 확인
-		// 있으면 새로 생성 안하고 주소값만 복사
+		//                                              있으면 새로 생성 안하고 주소값만 복사
 		String str4 = new String("안녕");     // 새로운 객체 생성
 
 		System.out.println(str1 == str2);
