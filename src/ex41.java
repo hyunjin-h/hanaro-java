@@ -1,7 +1,7 @@
 // final이 클래스 안에서 사용될 때
 final class FinalClass {
 	String name = "Final Class";
-	final int price = 1000; // 상수타입의 필드, 힙영역의 참조변수는 강제초기화
+	final int price = 1000; // 상수타입의 필드, 초기화 필수!
 
 	final void disp() {
 	}

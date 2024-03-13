@@ -3,9 +3,9 @@ import com.sun.security.jgss.GSSUtil;
 // static 초기화 블럭
 class StaticClass {
 	int a;
-	static int b = 0;
+	static int b = 0;// 프로그램 시작 시 초기화
 
-	static { // 프로그램 시작시 호출됨. main함수 이전에
+	static { // => 클래스 호출시 한번만 호출됨!
 		b = 5;
 		System.out.println("Static block!");
 	}
