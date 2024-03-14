@@ -54,6 +54,7 @@ class HanaAccount {
 	}
 
 	public void outcome(int balance) {
+
 		System.out.println("출금:" + balance);
 		this.balance -= balance;
 	}
