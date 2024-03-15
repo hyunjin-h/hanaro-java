@@ -1,5 +1,5 @@
 package DBMS;
-// MemberDAO 생성자함수에 DB연결 코드가 들어가 있다.
+// StudentDAO 생성자함수에 DB연결 코드가 들어가 있다.
 //
 // insert메소드에 DB 레코드 추가 코드가 들어가 있다.
 
@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberDAO {
+public class StudentDAO {
 	// 데이터베이스 접속 객체
 	Connection conn = null;
 	// SQL 쿼리를 구현하는 객체
@@ -15,7 +15,7 @@ public class MemberDAO {
 	// 쿼리에 대한 응답인 ResultSet을 가져오는 객체
 	ResultSet rs = null;
 	
-	public MemberDAO() {
+	public StudentDAO() {
 		try {
 			// MariaDB 드라이버 로드
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -38,13 +38,14 @@ public class MemberDAO {
 		}
 	}
 	
-	public int insert(MemberVO vo) {
+	public int insert(StudentVO vo) {
 		int result = 0;
 		try {
-			//"INSERT INTO member (memberno, id, name) VALUES (1, 'hong', '홍길동')"
-			String sql = "INSERT INTO member (memberno, id, name) " +
-					"VALUES (" + vo.getMemberno() + ", '" + vo.getId() + "', '" +
-					vo.getName() + "')"; // 세미콜론은 넣지 않는다!
+			String sql = "INSERT INTO student (name, kor,eng,math,avg) " +
+					"VALUES ('" + vo.getName() + "', " + vo.getKor() + ", " +
+					vo.getEng() + ", " +
+					vo.getMath() + ", " +
+					vo.getAvg() + ")"; // 세미콜론은 넣지 않는다!
 			stmt = conn.createStatement();
 			// 정상수행되면 1을 리턴함.
 			// insert,update,delete SQL문은 영향을 줄(ROW) 갯수를 반환함.
@@ -55,17 +56,20 @@ public class MemberDAO {
 		return result;
 	}
 	
-	public MemberVO selectOne(int memberno) {
-		MemberVO vo = new MemberVO();
+	public StudentVO selectOne(String name) {
+		StudentVO vo = new StudentVO();
 		
 		try {
-			String sql = "SELECT * FROM member WHERE memberno=" + memberno;
+			String sql = "SELECT * FROM student WHERE name='" + name + "'";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			if (rs.next()) {
-				vo.setMemberno(rs.getInt("memberno"));
-				vo.setId(rs.getString("id"));
+				
 				vo.setName(rs.getString("name"));
+				vo.setKor(rs.getInt("kor"));
+				vo.setEng(rs.getInt("eng"));
+				vo.setMath(rs.getInt("math"));
+				vo.setAvg(rs.getDouble("avg"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,12 +77,11 @@ public class MemberDAO {
 		return vo;
 	}
 	
-	public int update(MemberVO vo) {
+	public int update(StudentVO vo) {
 		int result = 0;
 		try {
-			String sql = "UPDATE member SET id='" +
-					vo.getId() + "', name='" + vo.getName() + "'" +
-					" WHERE memberno=" + vo.getMemberno();
+			String sql = "UPDATE student SET name='" +
+					vo.getName() + "', kor=" + vo.getKor() + ", eng=" + vo.getEng() + ", math=" + vo.getMath() + ", avg=" + vo.getAvg() + " WHERE name='" + vo.getName() + "'";
 			stmt = conn.createStatement();
 			result = stmt.executeUpdate(sql);
 		} catch (Exception e) {
@@ -87,10 +90,10 @@ public class MemberDAO {
 		return result;
 	}
 	
-	public int delete(int memberno) {
+	public int delete(String name) {
 		int result = 0;
 		try {
-			String sql = "DELETE FROM member WHERE memberno=" + memberno;
+			String sql = "DELETE FROM student WHERE name='" + name + "'";
 			stmt = conn.createStatement();
 			result = stmt.executeUpdate(sql);
 		} catch (Exception e) {
@@ -99,17 +102,20 @@ public class MemberDAO {
 		return result;
 	}
 	
-	public List<MemberVO> list() {
-		List<MemberVO> list = new ArrayList<>();
+	public List<StudentVO> list() {
+		List<StudentVO> list = new ArrayList<>();
 		try {
-			String sql = "SELECT * FROM member";
+			String sql = "SELECT * FROM student";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				MemberVO vo = new MemberVO();
-				vo.setMemberno(rs.getInt("memberno"));
-				vo.setId(rs.getString("id"));
+				StudentVO vo = new StudentVO();
 				vo.setName(rs.getString("name"));
+				vo.setKor(rs.getInt("kor"));
+				vo.setEng(rs.getInt("eng"));
+				vo.setMath(rs.getInt("math"));
+				vo.setAvg(rs.getDouble("avg"));
+				
 				list.add(vo);
 			}
 		} catch (Exception e) {
